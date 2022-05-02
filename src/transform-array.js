@@ -17,45 +17,39 @@ function transform(arr) {
   if (!Array.isArray(arr)) {
     throw new Error("'arr' parameter must be an instance of the Array!");
   } 
-  let result = arr.slice(0),
-      i = 0;
+  let result = arr.slice(0);
   if (result.length == 0) {
     return arr;
   } 
-  while (i < result.length) {
-    console.log(result);
-    if (result[i] === '--discard-next') {
+  result.map((item, i) => {
+    if (item === '--discard-next') {
       if (i == result.length - 1) {
-        result.pop();
-        i = 0;
+        result.splice(i,1)
       } else {
-        result.splice(i,2);
+        result.splice(i,2)
       }
-    } else if (result[i] === '--discard-prev') {
+    } else if (item === '--discard-prev') {
       if (i == 0) {
-        result.unshift(result[i]);
+        result.splice(i,1)
       } else {
-        result.splice(--i,2);
+        result.splice(--i,2)
       }
-    } else if (result[i] === '--double-next') {
+    } else if (item === '--double-next') {
       if (i == result.length - 1) {
-        result.push(result[i]);
+        result.splice(i, 1)
       } else {
-        result.splice(i, 1, result[++i]);
+        result.splice(i, 1,result[++i])
       }
-    } else if (result[i] === '--double-prev') {
+    } else if (item === '--double-prev') {
       if (i == 0) {
-        result.unshift(result[i]);
+        result.splice(i, 1)
       } else {
-        result.splice(i, 1,result[--i]);
+        result.splice(i, 1,result[--i])
       }
-    } else {
-      i++;
-    }
-  }
+    } 
+  })
   return result
 }
-console.log(transform([1, 2, 3, '--discard-next', 1337, '--double-prev', 4, 5]));
 module.exports = {
   transform
 };
